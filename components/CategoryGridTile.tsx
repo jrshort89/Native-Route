@@ -35,9 +35,9 @@ export default function CategoryGridTile(props: any) {
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    // alignItems: "center",
     margin: 15,
     height: 130,
+    elevation: 5,
   },
   container: {
     flex: 1,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
-    elevation: 3,
+
     justifyContent: "flex-end",
     alignItems: "flex-end",
     padding: 15,

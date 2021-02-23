@@ -1,6 +1,7 @@
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import DefaultText from "./DefaultText";
 
 export default function MealItem(props: any) {
   return (
@@ -12,13 +13,15 @@ export default function MealItem(props: any) {
               source={{ uri: props.image }}
               style={styles.bgImage}
             >
-              <Text style={styles.title}>{props.title}</Text>
+              <Text numberOfLines={1} style={styles.title}>
+                {props.title}
+              </Text>
             </ImageBackground>
           </View>
           <View style={{ ...styles.mealRow, ...styles.mealDetail }}>
-            <Text>{props.duration} m</Text>
-            <Text>{props.complexity.toUpperCase()}</Text>
-            <Text>{props.affordability.toUpperCase()}</Text>
+            <DefaultText>{props.duration}m</DefaultText>
+            <DefaultText>{props.complexity.toUpperCase()}</DefaultText>
+            <DefaultText>{props.affordability.toUpperCase()}</DefaultText>
           </View>
         </View>
       </TouchableOpacity>
@@ -32,8 +35,9 @@ const styles = StyleSheet.create({
   },
   mealItem: {
     height: 200,
-    width: "100%",
-    backgroundColor: "#ccc",
+    width: "90%",
+    backgroundColor: "#f5f5f5",
+    alignSelf: "center",
   },
   mealHeader: {
     height: "90%",
@@ -41,15 +45,23 @@ const styles = StyleSheet.create({
   mealDetail: {
     paddingHorizontal: 10,
     justifyContent: "space-between",
+    alignItems: "center",
+    height: "10%",
   },
   bgImage: {
     width: "100%",
     height: "100%",
+    justifyContent: "flex-end",
+    overflow: "hidden",
+    borderRadius: 10,
   },
   title: {
     fontFamily: "open-sans-bold",
     fontSize: 22,
     color: "white",
-    backgroundColor: "rgba(0,0,0,0.7)",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    textAlign: "center",
   },
 });

@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Platform,
-} from "react-native";
+import { StyleSheet, FlatList, Platform } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 import Colors from "../constants/Colors";
 import CategoryGridTile from "../components/CategoryGridTile";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/CustomHeaderButton";
 
 export default function CategoriesScreen(props: any) {
   const renderGridItem = (itemData: any) => {
@@ -33,13 +29,21 @@ export default function CategoriesScreen(props: any) {
   );
 }
 
-CategoriesScreen.navigationOptions = {
-  // headerTitle: "Meal Categories",
-  // done in navigation file^^
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primaryColor : null,
-  },
-  headerTintColor: Platform.OS === "android" ? "white" : Colors.primaryColor,
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Meal Categories",
+    headerLeft: (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
