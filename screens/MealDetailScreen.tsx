@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSelector, useDispatch } from "react-redux";
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import DefaultText from "../components/DefaultText";
-import { MEALS } from "../data/dummy-data";
+import { toggleFavorite } from "../store/actions/meals";
 
 export default function MealDetailScreen(props: any) {
+  const availableMeals = useSelector((state) => state.meals);
   const mealId = props.navigation.getParam("mealId");
+  const currentMealIsFav = useSelector((state) =>
+    state.favoriteMeals.some((meal) => meal.id === mealId)
+  );
 
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const dispatch = useDispatch();
+
+  const selectedMeal = availableMeals.find((meal) => meal.id === mealId);
+
+  const toggleFavHandler = useCallback(() => {
+    dispatch(toggleFavorite(mealId));
+  }, [dispatch, mealId]);
+
+  // useEffect(() => {
+  //   props.navigation.setParams({
+  //     mealTitle: selectedMeal.title,
+  //   });
+  // }, [selectedMeal]);
+
+  useEffect(() => {
+    props.navigation.setParams({
+      toggleFav: toggleFavHandler,
+    });
+  }, [toggleFavHandler]);
+
+  useEffect(() => {
+    props.navigation.setParams({
+      isFav: currentMealIsFav,
+    });
+  }, [currentMealIsFav]);
 
   return (
     <ScrollView>
@@ -36,18 +65,19 @@ export default function MealDetailScreen(props: any) {
 }
 
 MealDetailScreen.navigationOptions = (navData: any) => {
-  const mealId = navData.navigation.getParam("mealId");
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const mealTitle = navData.navigation.getParam("mealTitle");
+  const toggleFav = navData.navigation.getParam("toggleFav");
+  const isFav = navData.navigation.getParam("isFav");
+  // const mealId = navData.navigation.getParam("mealId");
+  // const selectedMeal = MEALS.find((meal) => meal.id === mealId);
   return {
-    headerTitle: selectedMeal?.title,
+    headerTitle: mealTitle,
     headerRight: (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Favorite"
-          iconName="ios-star"
-          onPress={() => {
-            return;
-          }}
+          iconName={isFav ? "ios-star" : "ios-star-outline"}
+          onPress={() => toggleFav()}
         />
       </HeaderButtons>
     ),
